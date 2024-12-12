@@ -1,4 +1,5 @@
 #include <iostream>
+#include <queue>
 class TreeNode {
     public:
         int data;
@@ -22,6 +23,44 @@ bool search(TreeNode* root, int target){
     } else {
         return true;
     }
+}
+
+void postorder(TreeNode* root){
+    if(!root){
+        return;
+    }
+
+    postorder(root->left);
+    postorder(root->right);
+    std::cout<<root->data<<std::endl;
+}
+
+void BFS(TreeNode* root){
+    std::queue<TreeNode*> queue;
+
+    if(root){
+        queue.push(root);
+    } 
+
+    int level = 0;
+    while (queue.size() > 0){
+        std::cout<<"level: "<<level<<std::endl;
+        int length = queue.size();
+        for(int i = 0; i < length; i++){
+            TreeNode* curr = queue.front();
+            queue.pop();
+            std::cout<<curr->data<<' ';
+            if(curr->left){
+                queue.push(curr->left);
+            }
+            if(curr->right){
+                queue.push(curr->right);
+            }
+        }
+        level++;
+        std::cout<<std::endl;
+    }
+    
 }
 
 TreeNode* insert(TreeNode* root, int val) {
@@ -95,6 +134,9 @@ int main() {
 
     root = remove(root, 50);
     std::cout << "Removed 50. Is 50 in the tree? " << (search(root, 50) ? "Yes" : "No") << std::endl;
+
+    postorder(root);
+    BFS(root);
 
     return 0;
 }
